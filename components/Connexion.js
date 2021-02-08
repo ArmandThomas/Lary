@@ -1,7 +1,6 @@
 import React from 'react'
 import { Text,TextInput, View, StyleSheet, Image, TouchableOpacity, Button } from 'react-native';
 import { connect } from 'react-redux';
-import { sha256 } from 'react-native-sha256';
 import { UserGet } from '../api/UserGet'
 
 class Connexion extends React.Component {
@@ -21,18 +20,22 @@ class Connexion extends React.Component {
       this.setState({
         data : data.data
       } ,() => {
-        if (this.state.data.length == 0) {
+        try {
+          if (this.state.data.length !== 0) {
+            const action = { type : "PROFIL_CONNEXION", value : this.state }
+            this.props.dispatch(action)
+            this.setState ({
+              loading : false,
+            })
+          }
+        } catch(e) {
           this.setState({
             error: true,
-            msgerror : 'Vos identifiants ne semble pas correspondre'
+            msgerror : 'Vos identifiants ne semble pas correct'
           })
-        } else {
-          const action = { type : "PROFIL_CONNEXION", value : this.state }
-          this.props.dispatch(action)
-          this.setState ({
-            loading : false,
-          })
-        }
+        },
+
+
       });
     })
   }
@@ -64,13 +67,14 @@ class Connexion extends React.Component {
           value = {this.state.UsernameProfil}
           />
           <TextInput
+          secureTextEntry={true}
           style = {{marginTop: 50}}
           placeholder = "Password"
           onChangeText = {(text) => this.setState({ passwordProfil : text})}
           value = {this.state.passwordProfil}
           />
           <Button style = {{marginTop: 50}} title="Se connecter" onPress={() => this._ToggleConnexion()}/>
-          <Button style = {{marginTop: 50}} title="Inscription" onPress={() => navigation.navigate('Inscription')}/>
+          <Button style = {{marginTop: 50}} title="Inscription" onPress={() => this.props.navigation.navigate('Inscription')}/>
         </View>
       )
     } else {
@@ -83,6 +87,7 @@ class Connexion extends React.Component {
           value = {this.state.UsernameProfil}
           />
           <TextInput
+          secureTextEntry={true}
           style = {{marginTop: 50}}
           placeholder = "Password"
           onChangeText = {(text) => this.setState({ passwordProfil : text})}
@@ -90,7 +95,7 @@ class Connexion extends React.Component {
           />
           <Text>{this.state.msgerror}</Text>
           <Button style = {{marginTop: 50}} title="Se connecter" onPress={() => this._ToggleConnexion()}/>
-          <Button style = {{marginTop: 50}} title="Inscription" onPress={() => navigation.navigate('Inscription')}/>
+          <Button style = {{marginTop: 150}} title="Inscription" onPress={() => this.props.navigation.navigate('Inscription')}/>
         </View>
       )
     }

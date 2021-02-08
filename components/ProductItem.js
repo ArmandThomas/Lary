@@ -7,7 +7,7 @@ class ProductItem extends React.Component {
   constructor(props) {
     super(props);
     this.product = props.product
-    pathIMG = this.product.product.image_small_url
+    pathIMG = this.product.image_small_url
   }
 
   render() {
@@ -17,11 +17,11 @@ class ProductItem extends React.Component {
         <Image style={styles.image_container} source={{uri : pathIMG }} />
         <View style={styles.second_container}>
           <View style={styles.header_container}>
-            <Text style={styles.title_text}>{this.product.product.product_name_fr}</Text>
-            <Text style={styles.nutri_score}>{this.product.product.nutriscore_grade}</Text>
+            <Text style={styles.title_text}>{this.product.product_name_fr}</Text>
+            <Text style={styles.nutri_score}>{this.product.nutriscore_grade}</Text>
           </View>
           <View style={styles.body_container}>
-            <Text style={styles.description} numberOfLines={6}>{this.product.product.ingredients_text_fr}</Text>
+            <Text style={styles.description} numberOfLines={6}>{this.product.ingredients_text_fr}</Text>
           </View>
           <View style={styles.date}>
             <Text>{}</Text>

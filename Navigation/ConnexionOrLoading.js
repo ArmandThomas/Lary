@@ -1,12 +1,12 @@
 import React from 'react'
 import NavigationBottom from '../Navigation/Navigation'
 import {connect} from 'react-redux';
-import Connexion from '../components/Connexion'
+import NavigationConnexion from '../Navigation/NavigationConnexion'
 class ConnexionOrLoading extends React.Component {
   render () {
-    if (this.props.online == false)  {
+    if (this.props.reducerProfil.online == false)  {
         return(
-          <Connexion/>
+          <NavigationConnexion/>
         )
     } else {
       return(

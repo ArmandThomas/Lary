@@ -8,6 +8,8 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 
 import ProductItem from './ProductItem.js';
 import {readOpenFoodFactsProducts} from '../api/OpenFoodFacts.js';
+import { PostBarcode } from '../api/POSTBarcode'
+import { connect } from 'react-redux';
 
 class Search extends React.Component {
   state = {
@@ -27,7 +29,7 @@ _loadProducts(barcode) {
     })
     readOpenFoodFactsProducts(barcode).then(data => {
         this.setState({
-          product: data
+          product: data.product
          })
          console.log(this.state.product)
     })
@@ -58,6 +60,9 @@ _loadProducts(barcode) {
         scanned: true,
         barcodeData : {data}
        });
+       PostBarcode(this.props.reducerProfil.mailProfil,data)
+       const action = {type : "ADD_BARCODE", barcode : data, mail: this.props.reducerProfil.mailProfil}
+       this.props.dispatch(action)
        this._loadProducts(data);
 
     };
@@ -86,4 +91,7 @@ _loadProducts(barcode) {
 
   }
 }
-export default Search
+const mapStatetoProps = (state) => {
+  return state
+}
+export default connect(mapStatetoProps)(Search)

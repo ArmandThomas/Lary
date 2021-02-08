@@ -11,63 +11,55 @@ const ProfilState = {
 
 
 
-function reducerProfil(state = ProfilState, action) {
+export default function reducerProfil(state = ProfilState, action) {
   let nextState
   switch (action.type) {
     case 'PROFIL_CONNEXION' :
       const UsernameProfilIndex  = state.UsernameProfil.findIndex(item => item === action.value.UsernameProfil)
       if (UsernameProfilIndex !== -1) {
         nextState = {
+          online: true,
           ...state,
-          online: true
         }
       } else {
           nextState = {
             ...state,
-            online: true,
-            id : [...state.id,action.value.data.id],
-            UsernameProfil : [...state.UsernameProfil,action.value.data.username],
-            passwordProfil : [...state.passwordProfil,action.value.data.password],
-            mailProfil : [...state.mailProfil,action.value.data.mail],
-            level : [...state.level,action.value.data.level]
+            online : true,
+            id : [action.value.data[0].id],
+            UsernameProfil : [action.value.data[0].username],
+            passwordProfil : [action.value.data[0].password],
+            mailProfil : [action.value.data[0].mail],
+            level : [action.value.data[0].level]
           }
-
-
-        // nextState = {
-        //   ...state,
-        //   UsernameProfil : [...state.UsernameProfil, action.value.UsernameProfil]
-        // }
-        // nextState = {
-        //   ...state,
-        //   loading: true,
-        //   UsernameProfil : [...state.UsernameProfil, action.value.UsernameProfil]
-        //  }
-          // nextState = {
-          //   ...state,
-          //   loading: true,
-          // }
-          // if (data.message == 'connexion reussi') {
-          //   nextState = {
-          //     ...state,
-          //     online: true,
-          //     id : [...state.id,data.data[0].id],
-          //     UsernameProfil : [...state.UsernameProfil,data.data[0].username],
-          //     passwordProfil : [...state.passwordProfil,data.data[0].password],
-          //     mailProfil : [...state.mailProfil,data.data[0].mail],
-          //     level : [...state.level,data.data[0].level]
-          //   }
-          // } else {
-          //   nextState = {
-          //     ...state,
-          //     error : true,
-          //     messageErreur : 'Vos identifiants de connexion ne corresponde pas'
-          //   }
-          // }
       }
       return nextState || state
+    case 'PROFIL_DECONNEXION' :
+      nextState = {
+        ...state,
+        id : [],
+        UsernameProfil : [],
+        passwordProfil : [],
+        mailProfil : [],
+        level : [],
+        online : false
+      }
+      console.log(nextState)
+      return nextState || state
+    case 'PROFIL_INSCRIPTION' :
+    nextState = {
+      ...state,
+      online : true,
+      id : [action.value.data[0].id],
+      UsernameProfil : [action.value.data[0].username],
+      passwordProfil : [action.value.data[0].password],
+      mailProfil : [action.value.data[0].mail],
+      level : [action.value.data[0].level]
+    }
+    console.log(nextState)
+    return nextState || state
+
     default:
       return state
 
   }
 }
-export default reducerProfil

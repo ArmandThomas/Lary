@@ -6,9 +6,9 @@
     "orientation": "portrait",
     "icon": "./images/LaryNoir.png",
     "splash": {
-      "image": "./images/LaryNoir.png",
+      "image": "./assets/splashLary.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ff7675"
+      "backgroundColor": "#33efab"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
