@@ -84,10 +84,10 @@ function NavigationBottom() {
           activeTintColor: '#33efab',
           inactiveTintColor: '#888',
           style : {
-            height : 80
+            height : 60
           },
           labelStyle : {
-            marginBottom : 15
+            marginBottom : 3
           }
         }}
       >

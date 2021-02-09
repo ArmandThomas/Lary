@@ -31,7 +31,8 @@ _loadProducts(barcode) {
         this.setState({
           product: data.product
          })
-         console.log(this.state.product)
+         const action = {type : "ADD_BARCODE", barcode : data, mail: this.props.reducerProfil.mailProfil}
+         this.props.dispatch(action)
     })
 }
 
@@ -61,8 +62,6 @@ _loadProducts(barcode) {
         barcodeData : {data}
        });
        PostBarcode(this.props.reducerProfil.mailProfil,data)
-       const action = {type : "ADD_BARCODE", barcode : data, mail: this.props.reducerProfil.mailProfil}
-       this.props.dispatch(action)
        this._loadProducts(data);
 
     };

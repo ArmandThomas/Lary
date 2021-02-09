@@ -11,13 +11,21 @@ class RecapProduits extends React.Component {
     data : [],
     product : null,
     i : 0,
+    error : false,
   }
   _loadBarcode () {
     BarcodeScanned(this.props.reducerProfil.mailProfil).then(data => {
-      this.setState ({
-        data : data.results.data
-      })
-      this._loadBarcodeScanned ()
+      if (data.message == 'Aucun resultat'){
+        this.setState ({
+          data : []
+        })
+      }else {
+        this.setState ({
+          data : data.results.data
+        })
+        this._loadBarcodeScanned ()
+      }
+
     })
   }
   componentDidMount() {
@@ -28,7 +36,6 @@ class RecapProduits extends React.Component {
 _loadBarcodeScanned () {
   this.state.data.forEach((element) => {
     readOpenFoodFactsProducts(element.barcode).then(data => {
-      console.log(data)
       if (data.status == 1) {
         const action = {
           type : "LOAD_BARCODE",
@@ -46,12 +53,9 @@ _loadBarcodeScanned () {
       }
     })
   })
-
-
 }
+
 componentDidUpdate() {
-  console.log(this.state)
-  console.log(this.props.reducerBarcode)
   if (this.state.data.length == this.props.reducerBarcode.barcode.length && this.state.i == 0 && this.props.reducerBarcode.barcode.length > 0) {
     this.setState ({
       loading : false,
@@ -60,34 +64,42 @@ componentDidUpdate() {
   }
 }
 render () {
-  if (this.state.loading == true) {
+  console.log(this.props)
+  if (this.state.loading == true && this.state.length > 0) {
     return (
       <View>
       <Text> En chargement </Text>
       </View>
     )
   } else {
-    return (
-      <View style ={{ marginTop: 20}}>
-        <FlatList
-        data = {this.props.reducerBarcode.data}
-        renderItem={({ item }) => (
-          <View style={styles.main_container}>
-            <Image style={styles.image_container} source={{uri : item.image_small_url }} />
-            <View style={styles.second_container}>
-              <View style={styles.header_container}>
-                <Text style={styles.title_text}>{item.product_name_fr}</Text>
-                <Text style={styles.nutri_score}>{item.nutriscore_grade}</Text>
-              </View>
-              <View style={styles.body_container}>
-                <Text style={styles.description} numberOfLines={6}>{item.ingredients_text_fr}</Text>
+    if (this.state.data.length == 0 && this.props.reducerBarcode.data.length == 0){
+      return(
+        <View>
+          <Text>Ajouter un produit</Text>
+        </View>
+      )
+    } else{
+      return (
+        <View style ={{ marginTop: 20}}>
+          <FlatList
+          data = {this.props.reducerBarcode.data}
+          renderItem={({ item }) => (
+            <View style={styles.main_container}>
+              <Image style={styles.image_container} source={{uri : item.image_small_url }} />
+              <View style={styles.second_container}>
+                <View style={styles.header_container}>
+              <Text numberOfLines={1} style={styles.title_text}>{item.product_name_fr}</Text>
+                </View>
+                <View style={styles.body_container}>
+                  <Text style={styles.description} numberOfLines={6}>{item.brands}</Text>
+                </View>
               </View>
             </View>
-          </View>
-        )}
-        />
-      </View>
-    )
+          )}
+          />
+        </View>
+      )
+    }
   //   return(
   //   for (let x = 0; x < this.props.reducerBarcode.data.length; x++) {
   //       <View>

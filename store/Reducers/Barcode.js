@@ -11,6 +11,7 @@ export default function reducerBarcode (state = ScannedData, action) {
   let nextState
   switch (action.type) {
     case 'LOAD_BARCODE':
+    console.log(action)
     try {
       const BarcodeScannedIndex = state.barcode.findIndex(item => item === action.value.code)
       if (BarcodeScannedIndex !== -1) {
@@ -56,23 +57,21 @@ export default function reducerBarcode (state = ScannedData, action) {
       }
     return nextState || state
       break;
-    case 'ADD_BARCODE':
-    const BarcodeAddIndex = state.barcode.findIndex(item => item === action.barcode)
-    if (BarcodeAddIndex !== -1) {
-      nextState = {
-        ...state
-      }
-    } else {
-      nextState = {
-        ...state,
-        barcode : [...state.barcode,action.value.code],
-        email : [...state.email,action.profil],
-        nbr : state.nbr += 1,
-        data : [...state.data,action.value]
-      }
-    }
-
-
+      case 'ADD_BARCODE':
+        const BarcodeAddIndex = state.barcode.findIndex(item => item === action.barcode.code)
+        if (BarcodeAddIndex !== -1) {
+          nextState = {
+            ...state
+          }
+        } else {
+          nextState = {
+            ...state,
+            barcode : [...state.barcode,action.barcode.code],
+            email : [...state.email,action.mail],
+            nbr : state.nbr += 1,
+            data : [...state.data,action.barcode.product]
+          }
+        }
     return nextState || state
       break;
     case 'DECONNEXION' :
